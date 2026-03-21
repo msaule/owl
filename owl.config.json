@@ -1,0 +1,111 @@
+{
+  "user": {
+    "name": ""
+  },
+  "llm": {
+    "provider": "openai-compatible",
+    "baseUrl": "http://localhost:11434/v1",
+    "apiKey": "",
+    "model": "qwen2.5:14b-instruct",
+    "detailLevel": "standard",
+    "pricing": {
+      "inputPer1k": 0,
+      "outputPer1k": 0
+    }
+  },
+  "discovery": {
+    "quickSchedule": "*/30 * * * *",
+    "deepSchedule": "0 */6 * * *",
+    "dailySchedule": "0 7 * * *",
+    "maxDiscoveriesPerDay": 5,
+    "maxDiscoveriesPerRun": 3,
+    "minConfidence": 0.6,
+    "importanceThreshold": "medium"
+  },
+  "plugins": {
+    "mock": {
+      "enabled": false
+    },
+    "gmail": {
+      "enabled": false,
+      "credentials": "~/.owl/credentials/gmail.json",
+      "emailDetailLevel": "standard",
+      "pollSeconds": 60
+    },
+    "calendar": {
+      "enabled": false,
+      "credentials": "~/.owl/credentials/calendar.json",
+      "pollMinutes": 5,
+      "windowDays": 14
+    },
+    "files": {
+      "enabled": false,
+      "paths": [
+        "~/Documents",
+        "~/Desktop",
+        "~/Downloads"
+      ]
+    },
+    "shopify": {
+      "enabled": false
+    },
+    "github": {
+      "enabled": false
+    },
+    "slack": {
+      "enabled": false,
+      "botToken": "",
+      "channels": [],
+      "pollMinutes": 2
+    }
+  },
+  "quietHours": {
+    "start": "",
+    "end": "",
+    "weekends": false,
+    "muteUrgent": false
+  },
+  "channels": {
+    "cli": {
+      "enabled": true
+    },
+    "telegram": {
+      "enabled": false,
+      "botToken": "",
+      "chatId": "",
+      "pollReplies": true
+    },
+    "slack": {
+      "enabled": false,
+      "botToken": "",
+      "channel": ""
+    },
+    "discord": {
+      "enabled": false,
+      "webhookUrl": ""
+    },
+    "email-digest": {
+      "enabled": false,
+      "provider": "resend",
+      "apiKey": "",
+      "from": "",
+      "to": ""
+    },
+    "webhook": {
+      "enabled": false,
+      "url": "",
+      "secret": ""
+    },
+    "rss": {
+      "enabled": false,
+      "feedPath": "~/.owl/discoveries.atom",
+      "title": "OWL Discoveries"
+    },
+    "whatsapp": {
+      "enabled": false,
+      "phoneNumberId": "",
+      "accessToken": "",
+      "recipientPhone": ""
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "name": "owl-ai",
+  "version": "1.0.0",
+  "description": "Your AI that never sleeps. Watches your world. Discovers what you didn't know.",
+  "type": "module",
+  "main": "src/daemon/index.js",
+  "bin": {
+    "owl": "./src/cli/index.js"
+  },
+  "scripts": {
+    "start": "node src/daemon/index.js",
+    "test": "node --test tests/**/*.test.js",
+    "demo": "node src/cli/index.js demo"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "autonomous",
+    "discovery",
+    "daemon",
+    "local-first",
+    "privacy",
+    "llm",
+    "sqlite",
+    "world-model",
+    "entity-resolution",
+    "anomaly-detection",
+    "knowledge-graph",
+    "personal-ai",
+    "automation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/msaule/owl.git"
+  },
+  "homepage": "https://msaule.github.io/owl",
+  "bugs": {
+    "url": "https://github.com/msaule/owl/issues"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "files": [
+    "src/",
+    "owl.config.json",
+    "LICENSE",
+    "README.md"
+  ],
+  "dependencies": {
+    "better-sqlite3": "^12.8.0",
+    "chalk": "^5.6.2",
+    "commander": "^13.1.0",
+    "dotenv": "^16.6.1",
+    "inquirer": "^12.11.1",
+    "node-cron": "^4.2.1",
+    "ora": "^8.2.0"
+  }
+}
