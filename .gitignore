@@ -34,12 +34,6 @@ cost-log.ndjson
 tests/*.db
 tests/*.db-*
 
-# Internal specs
-OWL_CODEX_PROMPT.md
-OWL_COMPLETE.md
-ARCHITECTURE_NOTES.md
-LAUNCH_STRATEGY.md
-
 # Build
 dist/
 coverage/
