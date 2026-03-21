@@ -38,6 +38,7 @@ tests/*.db-*
 OWL_CODEX_PROMPT.md
 OWL_COMPLETE.md
 ARCHITECTURE_NOTES.md
+LAUNCH_STRATEGY.md
 
 # Build
 dist/
