@@ -519,6 +519,21 @@ function deselectNode() {
 // ── Init ──
 Promise.all([loadStats(), loadDiscoveries(), loadEvents(), loadSituations(), loadGraph()]);
 setInterval(()=>{ loadStats(); loadDiscoveries(); loadEvents(); loadSituations(); }, 60000);
+
+// ── Electron integration (frameless window drag + controls) ──
+if (window.owl) {
+  // Make header draggable
+  const hdr = document.querySelector('.header');
+  if (hdr) {
+    hdr.style.webkitAppRegion = 'drag';
+    // Make interactive elements inside header non-draggable
+    hdr.querySelectorAll('input, button, select, .score-badge, .filter-btn').forEach(el => {
+      el.style.webkitAppRegion = 'no-drag';
+    });
+    // Add left padding for traffic lights on macOS
+    owl.getPlatform().then(p => { if (p === 'darwin') hdr.style.paddingLeft = '80px'; });
+  }
+}
 <\/script>
 </body>
 </html>`;
