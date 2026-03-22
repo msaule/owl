@@ -3,14 +3,17 @@
   "version": "1.0.0",
   "description": "Your AI that never sleeps. Watches your world. Discovers what you didn't know.",
   "type": "module",
-  "main": "src/daemon/index.js",
+  "main": "desktop/main.cjs",
   "bin": {
     "owl": "./src/cli/index.js"
   },
   "scripts": {
     "start": "node src/daemon/index.js",
     "test": "node --test tests/**/*.test.js",
-    "demo": "node src/cli/index.js demo"
+    "demo": "node src/cli/index.js demo",
+    "electron:dev": "ELECTRON_RUN_AS_NODE= electron .",
+    "electron:build": "electron-builder",
+    "electron:rebuild": "electron-builder install-app-deps"
   },
   "keywords": [
     "ai",
@@ -56,5 +59,49 @@
     "inquirer": "^12.11.1",
     "node-cron": "^4.2.1",
     "ora": "^8.2.0"
+  },
+  "devDependencies": {
+    "electron": "^33.4.11",
+    "electron-builder": "^26.8.1"
+  },
+  "build": {
+    "appId": "com.owl.ai",
+    "productName": "OWL",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "desktop/**/*",
+      "node_modules/**/*",
+      "package.json",
+      "owl.config.json"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "desktop/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "desktop/icon.png",
+      "uninstallerIcon": "desktop/icon.png"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "icon": "desktop/icon.png",
+      "category": "public.app-category.productivity"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "icon": "desktop/icon.png",
+      "category": "Utility"
+    }
   }
 }

@@ -1,4 +1,5 @@
 import http from 'node:http';
+import fs from 'node:fs';
 import { loadConfig } from '../config/index.js';
 import { WorldModel } from '../core/world-model.js';
 import { buildAdjacencyList, getHubs, findClusters } from '../core/graph.js';
@@ -113,19 +114,47 @@ function parseQuery(url) {
   return params;
 }
 
+function readBody(req) {
+  return new Promise((resolve, reject) => {
+    const chunks = [];
+    req.on('data', (c) => chunks.push(c));
+    req.on('end', () => resolve(Buffer.concat(chunks).toString()));
+    req.on('error', reject);
+  });
+}
+
 export function startDashboard(options = {}) {
   const config = loadConfig(options.config);
   const port = options.port || 3000;
 
-  const server = http.createServer((req, res) => {
+  const server = http.createServer(async (req, res) => {
     const url = req.url.split('?')[0];
     const query = parseQuery(req.url);
+
+    // CORS preflight for save-config
+    if (req.method === 'OPTIONS') {
+      res.writeHead(204, {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type'
+      });
+      return res.end();
+    }
 
     try {
       if (url === '/' || url === '/index.html') {
         res.writeHead(200, { 'Content-Type': 'text/html' });
         res.end(getDashboardHtml());
         return;
+      }
+
+      // Save config endpoint (used by setup wizard)
+      if (url === '/api/save-config' && req.method === 'POST') {
+        const body = await readBody(req);
+        const newConfig = JSON.parse(body);
+        const configPath = config.paths.configPath;
+        fs.writeFileSync(configPath, JSON.stringify(newConfig, null, 2));
+        return jsonResponse(res, { ok: true });
       }
 
       if (url === '/api/stats') return jsonResponse(res, apiStats(config));

@@ -178,6 +178,26 @@ docker run -d --name owl -v owl-data:/data -p 3000:3000 owl
 
 The container runs the daemon and exposes the dashboard on port 3000. Mount a volume for persistent data. Set `OWL_LLM_BASE_URL` to point to your Ollama instance (use `host.docker.internal` for host-network access).
 
+## Desktop App (Windows / macOS / Linux)
+
+OWL ships as a native desktop app with system tray integration, built-in dashboard, and a setup wizard.
+
+```bash
+# Development
+npm run electron:dev
+
+# Build installer (.exe / .dmg / .AppImage)
+npm run electron:build
+```
+
+Features:
+- System tray with live OWL Score, daemon status, and quick actions
+- Main window loads the full web dashboard
+- Setup wizard walks you through LLM, plugins, channels, and preferences on first run
+- Daemon auto-starts and auto-restarts on crash
+- Minimize to tray — OWL keeps watching in the background
+- Single instance lock prevents duplicate windows
+
 ## Advanced Features
 
 ### Discovery Chains
@@ -232,6 +252,7 @@ src/
   llm/          # LLM connection, entity extraction, conversation follow-up
   mcp/          # Model Context Protocol server for Claude Desktop, Cursor, etc.
   plugins/      # Data source plugins (Gmail, Calendar, Slack, GitHub, Files, Shopify, Mock)
+desktop/        # Electron main process, tray icon, setup wizard
 tests/
 docs/
 ```
