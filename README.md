@@ -84,6 +84,9 @@ owl reset                         # Start fresh
 owl config                        # Open config in editor
 owl logs                          # Recent log output
 owl cost                          # LLM usage costs
+owl ask "what's happening with Acme?"  # Natural language queries
+owl dashboard                     # Web UI with knowledge graph
+owl dashboard --port 8080
 owl service install               # Survive reboots
 owl service status
 ```
@@ -110,6 +113,70 @@ Each plugin follows the same contract: `setup`, `watch`, `query`, plus a local `
 - `webhook` — POST JSON to any URL (n8n, Zapier, IFTTT, custom integrations)
 - `rss` — local Atom feed file for any feed reader (Feedly, Miniflux, etc.)
 - `whatsapp` — via Meta Business Cloud API
+
+## Ask OWL Anything
+
+Talk to your world model in natural language:
+
+```bash
+owl ask "what's happening with Acme Corp?"
+owl ask "who am I meeting this week?"
+owl ask "any risks I should know about?"
+owl ask "what's the relationship between Sarah and Project Aurora?" --days 30
+```
+
+OWL queries your entire knowledge graph — entities, events, discoveries, patterns, situations — and answers using your configured LLM.
+
+## Web Dashboard
+
+Launch a visual dashboard at `localhost:3000`:
+
+```bash
+owl dashboard
+```
+
+Features:
+- **Interactive knowledge graph** — force-directed D3.js visualization of entities and relationships
+- **Live discovery feed** — real-time stream of insights with urgency colors
+- **OWL Score gauge** — world-awareness metric with breakdown
+- **Event timeline** — recent activity across all sources
+- Auto-refreshes every 60 seconds
+
+## MCP Server (Claude Desktop / Cursor / Windsurf)
+
+OWL exposes a Model Context Protocol server so any MCP-compatible AI client can query your world model:
+
+```json
+{
+  "mcpServers": {
+    "owl": {
+      "command": "node",
+      "args": ["/path/to/owl/src/mcp/server.js"]
+    }
+  }
+}
+```
+
+**Available MCP tools:** `owl_status`, `owl_ask`, `owl_entities`, `owl_discoveries`, `owl_events`, `owl_entity_detail`, `owl_graph`, `owl_situations`
+
+**Available MCP resources:** `owl://world-model/snapshot`, `owl://health/report`
+
+This means Claude Desktop, Cursor, Windsurf, or any MCP client can ask "What's happening in my world?" and get real answers from your data.
+
+## Docker
+
+```bash
+docker compose up -d
+```
+
+Or build manually:
+
+```bash
+docker build -t owl .
+docker run -d --name owl -v owl-data:/data -p 3000:3000 owl
+```
+
+The container runs the daemon and exposes the dashboard on port 3000. Mount a volume for persistent data. Set `OWL_LLM_BASE_URL` to point to your Ollama instance (use `host.docker.internal` for host-network access).
 
 ## Advanced Features
 
@@ -155,13 +222,15 @@ User reactions (via Telegram reply, Slack thread, or CLI) feed back into prefere
 
 ```text
 src/
-  cli/          # CLI commands, setup wizard, status, history, health, export
-  channels/     # Discovery delivery (CLI, Telegram, Slack, Discord, Email, Webhook, RSS)
+  cli/          # CLI commands, setup wizard, status, history, health, export, ask
+  channels/     # Discovery delivery (CLI, Telegram, Slack, Discord, Email, Webhook, RSS, WhatsApp)
   core/         # World model, entity resolution, patterns, situations, anomaly detection, graph
   daemon/       # Background daemon, scheduler, process management, OS services
+  dashboard/    # Web UI server + embedded HTML/JS with D3.js knowledge graph
   discovery/    # Engine, prompts, filtering, chains, correlation, debrief, health
   learning/     # Feedback, preferences, improvement scoring
   llm/          # LLM connection, entity extraction, conversation follow-up
+  mcp/          # Model Context Protocol server for Claude Desktop, Cursor, etc.
   plugins/      # Data source plugins (Gmail, Calendar, Slack, GitHub, Files, Shopify, Mock)
 tests/
 docs/

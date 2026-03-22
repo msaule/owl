@@ -20,6 +20,7 @@ import { computeHealthMetrics, detectHealthAnomalies, formatHealthReport } from 
 import { buildAdjacencyList, findPath as graphFindPath, findClusters as graphFindClusters, getHubs as graphGetHubs } from '../core/graph.js';
 import { showBanner, computeOwlScore, formatOwlScore } from './banner.js';
 import { runDemo } from './demo.js';
+import { runAsk } from './ask.js';
 
 const program = new Command();
 const __filename = fileURLToPath(import.meta.url);
@@ -434,6 +435,25 @@ program
     }
 
     worldModel.close();
+  });
+
+program
+  .command('ask <question...>')
+  .description('Ask OWL anything about your world — natural language queries against your world model')
+  .option('--days <days>', 'How far back to look', Number, 14)
+  .action(async (words, options) => {
+    ensureConfigFile();
+    await runAsk(words.join(' '), { days: options.days });
+  });
+
+program
+  .command('dashboard')
+  .description('Launch the OWL web dashboard with visual knowledge graph')
+  .option('--port <port>', 'Port to listen on', Number, 3000)
+  .action(async (options) => {
+    ensureConfigFile();
+    const { startDashboard } = await import('../dashboard/server.js');
+    startDashboard({ port: options.port });
   });
 
 program.parseAsync(process.argv);

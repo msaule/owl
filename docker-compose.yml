@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  owl:
+    build: .
+    container_name: owl
+    restart: unless-stopped
+    volumes:
+      - owl-data:/data
+    ports:
+      - "3000:3000"
+    environment:
+      - OWL_HOME=/data
+      # Uncomment and set your LLM provider:
+      # - OWL_LLM_BASE_URL=http://host.docker.internal:11434/v1
+      # - OWL_LLM_MODEL=qwen2.5:14b-instruct
+      # - OWL_LLM_API_KEY=
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  owl-data:
