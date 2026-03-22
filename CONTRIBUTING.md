@@ -30,12 +30,15 @@ src/
   channels/     # Discovery delivery (CLI, Telegram, Slack, Discord, Email, Webhook, RSS, WhatsApp)
   core/         # World model, entity resolution, graph, anomaly detection, migrations
   daemon/       # Background daemon, scheduler, process management, OS services
+  dashboard/    # Web UI server + embedded HTML/JS with D3.js knowledge graph
   discovery/    # Engine, prompts, filtering, chains, correlation, debrief, health
   learning/     # Feedback, preferences, confidence calibration
   llm/          # LLM connection, entity extraction, conversation follow-up
+  mcp/          # Model Context Protocol server for Claude Desktop, Cursor, etc.
   plugins/      # Data source plugins (Gmail, Calendar, Slack, GitHub, Files, Shopify, Mock)
   config/       # Configuration loading and defaults
   utils/        # Shared utilities (fs, time, logger)
+desktop/        # Electron app (main process, preload, tray, setup wizard)
 tests/          # Test suites (node:test)
 docs/           # Documentation and GitHub Pages site
 ```
@@ -67,9 +70,28 @@ node --test tests/banner-score.test.js
 
 Tests create temporary SQLite databases that are cleaned up automatically.
 
+## Desktop App (Electron)
+
+The desktop app lives in `desktop/` and uses CommonJS (`.cjs`) because Electron's main process requires it while the rest of the project uses ESM.
+
+```bash
+# Run in development
+npm run electron:dev
+
+# Build installer
+npm run electron:build
+```
+
+Key files:
+- `desktop/main.cjs` — Electron main process (window, tray, IPC, daemon management)
+- `desktop/preload.cjs` — secure contextBridge IPC between renderer and main
+- `desktop/icon.png` — app icon
+
+The desktop app spawns the dashboard as a child process using the system `node` binary (not Electron's built-in Node.js) to avoid native module ABI mismatches with better-sqlite3.
+
 ## Code Style
 
-- ESM modules throughout (`import`/`export`, no `require`)
+- ESM modules throughout (`import`/`export`, no `require`) — except `desktop/*.cjs`
 - Minimal dependencies — prefer Node.js built-ins
 - No TypeScript — plain JavaScript with clear function signatures
 - Keep files focused and under ~200 lines where possible

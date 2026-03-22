@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OWL — Your AI That Never Sleeps</title>
-  <meta name="description" content="OWL is a local-first AI daemon that watches your tools, builds a world model, and surfaces discoveries you didn't know you needed. Open source. Privacy-first.">
+  <meta name="description" content="OWL is a local-first AI daemon that watches your tools, builds a world model, and surfaces discoveries you didn't know you needed. Desktop app, web dashboard, CLI, MCP, Docker. Open source. Privacy-first.">
   <meta property="og:title" content="OWL — Your AI That Never Sleeps">
-  <meta property="og:description" content="A local AI daemon that watches your world and discovers what you didn't know. Gmail, Calendar, Slack, GitHub, Shopify — all connected. Zero cloud. Open source.">
+  <meta property="og:description" content="A local AI daemon that watches your world and discovers what you didn't know. Desktop app with native notifications. Gmail, Calendar, Slack, GitHub, Shopify — all connected. Zero cloud. Open source.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://msaule.github.io/owl">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="OWL — Your AI That Never Sleeps">
-  <meta name="twitter:description" content="Local-first AI daemon. Watches your tools. Discovers what you didn't know.">
+  <meta name="twitter:description" content="Local-first AI daemon with desktop app. Watches your tools. Discovers what you didn't know.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦉</text></svg>">
   <style>
     :root {
@@ -28,6 +28,7 @@
       --yellow: #fbbf24;
       --blue: #3b82f6;
       --purple: #a855f7;
+      --cyan: #06b6d4;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -40,193 +41,68 @@
       overflow-x: hidden;
     }
 
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
 
     /* Nav */
     nav {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 100;
+      position: fixed; top: 0; width: 100%; z-index: 100;
       background: rgba(10, 10, 15, 0.85);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
     }
-
-    nav .container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 64px;
-    }
-
-    .nav-logo {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--accent);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 28px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      color: var(--text-dim);
-      text-decoration: none;
-      font-size: 0.9rem;
-      transition: color 0.2s;
-    }
-
+    nav .container { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .nav-logo { font-size: 1.25rem; font-weight: 700; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    .nav-links { display: flex; gap: 24px; list-style: none; }
+    .nav-links a { color: var(--text-dim); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
     .nav-links a:hover { color: var(--accent); }
 
     /* Hero */
-    .hero {
-      padding: 160px 0 100px;
-      text-align: center;
-      position: relative;
-    }
-
+    .hero { padding: 160px 0 100px; text-align: center; position: relative; }
     .hero::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 600px;
-      height: 600px;
+      content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 600px;
       background: radial-gradient(circle, rgba(255, 179, 71, 0.08) 0%, transparent 70%);
       pointer-events: none;
     }
-
-    .hero-owl {
-      font-size: 4rem;
-      margin-bottom: 24px;
-      display: block;
-      animation: float 3s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-
+    .hero-owl { font-size: 4rem; margin-bottom: 24px; display: block; animation: float 3s ease-in-out infinite; }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
     .hero h1 {
-      font-size: 3.5rem;
-      font-weight: 800;
-      line-height: 1.1;
-      margin-bottom: 20px;
+      font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 20px;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
+    .hero .subtitle { font-size: 1.35rem; color: var(--text-dim); max-width: 640px; margin: 0 auto 40px; }
+    .cta-group { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
 
-    .hero .subtitle {
-      font-size: 1.35rem;
-      color: var(--text-dim);
-      max-width: 640px;
-      margin: 0 auto 40px;
-    }
-
-    .cta-group {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
+    /* Buttons */
     .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 14px 28px;
-      border-radius: 10px;
-      font-size: 1rem;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.2s;
-      border: none;
-      cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; border-radius: 10px; font-size: 1rem; font-weight: 600;
+      text-decoration: none; transition: all 0.2s; border: none; cursor: pointer;
     }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: #0a0a0f;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(255, 179, 71, 0.3);
-    }
-
-    .btn-secondary {
-      background: var(--card);
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    .btn-secondary:hover {
-      border-color: var(--accent);
-      transform: translateY(-2px);
-    }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #0a0a0f; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255, 179, 71, 0.3); }
+    .btn-secondary { background: var(--card); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { border-color: var(--accent); transform: translateY(-2px); }
 
     /* Terminal */
-    .terminal-section {
-      padding: 60px 0;
-    }
-
+    .terminal-section { padding: 60px 0; }
     .terminal {
-      background: #0d1117;
-      border-radius: 12px;
-      border: 1px solid #30363d;
-      overflow: hidden;
-      max-width: 700px;
-      margin: 0 auto;
+      background: #0d1117; border-radius: 12px; border: 1px solid #30363d;
+      overflow: hidden; max-width: 700px; margin: 0 auto;
       box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
     }
-
-    .terminal-header {
-      padding: 12px 16px;
-      background: #161b22;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .terminal-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-    }
-
+    .terminal-header { padding: 12px 16px; background: #161b22; display: flex; gap: 8px; align-items: center; }
+    .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
     .terminal-dot.red { background: #ff5f56; }
     .terminal-dot.yellow { background: #ffbd2e; }
     .terminal-dot.green { background: #27c93f; }
-
-    .terminal-title {
-      color: #8b949e;
-      font-size: 0.8rem;
-      margin-left: 8px;
-    }
-
+    .terminal-title { color: #8b949e; font-size: 0.8rem; margin-left: 8px; }
     .terminal-body {
       padding: 20px 24px;
       font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
-      font-size: 0.85rem;
-      line-height: 1.7;
-      color: #c9d1d9;
+      font-size: 0.85rem; line-height: 1.7; color: #c9d1d9;
     }
-
     .terminal-body .prompt { color: var(--green); }
     .terminal-body .cmd { color: #f0f6fc; }
     .terminal-body .comment { color: #8b949e; }
@@ -235,251 +111,179 @@
     .terminal-body .urgency-yellow { color: var(--yellow); }
     .terminal-body .urgency-green { color: var(--green); }
 
+    /* Section headers */
+    .section-title { text-align: center; font-size: 2.2rem; margin-bottom: 12px; }
+    .section-sub { text-align: center; color: var(--text-dim); margin-bottom: 60px; font-size: 1.1rem; }
+
     /* Features */
-    .features {
-      padding: 100px 0;
-    }
-
-    .features h2 {
-      text-align: center;
-      font-size: 2.2rem;
-      margin-bottom: 12px;
-    }
-
-    .features .section-sub {
-      text-align: center;
-      color: var(--text-dim);
-      margin-bottom: 60px;
-      font-size: 1.1rem;
-    }
-
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
-    }
-
+    .features { padding: 100px 0; }
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
     .feature-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 28px;
-      transition: all 0.2s;
+      background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+      padding: 28px; transition: all 0.2s;
+    }
+    .feature-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3); }
+    .feature-icon { font-size: 1.8rem; margin-bottom: 16px; display: block; }
+    .feature-card h3 { font-size: 1.15rem; margin-bottom: 8px; color: var(--text); }
+    .feature-card p { color: var(--text-dim); font-size: 0.9rem; }
+
+    /* Ways to Run */
+    .ways-to-run { padding: 100px 0; }
+    .run-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+    .run-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+      padding: 28px; text-align: center; transition: all 0.2s; position: relative; overflow: hidden;
+    }
+    .run-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .run-card .run-icon { font-size: 2.2rem; margin-bottom: 14px; display: block; }
+    .run-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+    .run-card p { color: var(--text-dim); font-size: 0.85rem; margin-bottom: 14px; }
+    .run-card code {
+      display: inline-block; background: rgba(0,0,0,0.3); padding: 4px 10px;
+      border-radius: 6px; font-size: 0.8rem; color: var(--green);
+      font-family: 'SF Mono', 'Fira Code', monospace;
+    }
+    .run-badge {
+      position: absolute; top: 12px; right: 12px;
+      font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 3px 8px; border-radius: 4px;
+    }
+    .badge-new { background: rgba(34, 197, 94, 0.15); color: var(--green); border: 1px solid rgba(34, 197, 94, 0.3); }
+
+    /* Desktop App Showcase */
+    .desktop-showcase { padding: 100px 0; }
+    .desktop-content { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    .desktop-features { list-style: none; }
+    .desktop-features li {
+      padding: 12px 0; border-bottom: 1px solid var(--border);
+      display: flex; gap: 12px; align-items: flex-start;
+    }
+    .desktop-features li:last-child { border-bottom: none; }
+    .desktop-features .feat-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+    .desktop-features .feat-text h4 { font-size: 0.95rem; margin-bottom: 2px; }
+    .desktop-features .feat-text p { font-size: 0.85rem; color: var(--text-dim); }
+
+    .desktop-mockup {
+      background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+      overflow: hidden; box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+    }
+    .mockup-titlebar {
+      height: 36px; background: #0a0a0f; display: flex; align-items: center;
+      padding: 0 12px; gap: 8px; border-bottom: 1px solid var(--border);
+    }
+    .mockup-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .mockup-dot.r { background: #ff5f56; } .mockup-dot.y { background: #ffbd2e; } .mockup-dot.g { background: #27c93f; }
+    .mockup-title { color: var(--text-dim); font-size: 0.75rem; margin-left: 8px; }
+    .mockup-body {
+      padding: 24px; min-height: 280px;
+      background: linear-gradient(135deg, rgba(255,179,71,0.03) 0%, rgba(168,85,247,0.03) 100%);
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .mockup-row { display: flex; gap: 12px; }
+    .mockup-block {
+      flex: 1; background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+      border-radius: 8px; padding: 16px;
+    }
+    .mockup-block h5 { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); margin-bottom: 8px; }
+    .mockup-score {
+      font-size: 2rem; font-weight: 800; color: var(--accent);
+      line-height: 1;
+    }
+    .mockup-score span { font-size: 0.9rem; color: var(--text-dim); font-weight: 400; }
+    .mockup-bar { height: 6px; border-radius: 3px; background: var(--border); margin-top: 6px; }
+    .mockup-bar-fill { height: 100%; border-radius: 3px; }
+    .mockup-node {
+      width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin: 2px;
     }
 
-    .feature-card:hover {
-      border-color: var(--accent);
-      transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+    /* Ask OWL */
+    .ask-section { padding: 100px 0; }
+    .ask-content { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    .ask-examples { list-style: none; }
+    .ask-examples li {
+      padding: 14px 18px; margin-bottom: 10px;
+      background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+      font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.85rem;
+      color: var(--green); transition: all 0.2s;
     }
-
-    .feature-icon {
-      font-size: 1.8rem;
-      margin-bottom: 16px;
-      display: block;
-    }
-
-    .feature-card h3 {
-      font-size: 1.15rem;
-      margin-bottom: 8px;
-      color: var(--text);
-    }
-
-    .feature-card p {
-      color: var(--text-dim);
-      font-size: 0.9rem;
-    }
+    .ask-examples li:hover { border-color: var(--accent); transform: translateX(4px); }
+    .ask-examples li span { color: var(--text-dim); }
 
     /* How it works */
-    .how-it-works {
-      padding: 100px 0;
-    }
-
-    .how-it-works h2 {
-      text-align: center;
-      font-size: 2.2rem;
-      margin-bottom: 60px;
-    }
-
-    .pipeline {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .pipeline-step {
-      text-align: center;
-      flex: 0 0 160px;
-    }
-
+    .how-it-works { padding: 100px 0; }
+    .pipeline { display: flex; justify-content: center; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+    .pipeline-step { text-align: center; flex: 0 0 160px; }
     .pipeline-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      margin: 0 auto 12px;
+      width: 64px; height: 64px; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; margin: 0 auto 12px;
     }
-
     .pipeline-step h4 { font-size: 0.95rem; margin-bottom: 4px; }
     .pipeline-step p { font-size: 0.8rem; color: var(--text-dim); }
-
-    .pipeline-arrow {
-      color: var(--accent);
-      font-size: 1.5rem;
-      padding-top: 20px;
-      flex: 0 0 20px;
-    }
-
+    .pipeline-arrow { color: var(--accent); font-size: 1.5rem; padding-top: 20px; flex: 0 0 20px; }
     .ps-watch .pipeline-icon { background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); }
     .ps-model .pipeline-icon { background: rgba(168, 85, 247, 0.15); border: 1px solid rgba(168, 85, 247, 0.3); }
     .ps-discover .pipeline-icon { background: rgba(255, 179, 71, 0.15); border: 1px solid rgba(255, 179, 71, 0.3); }
     .ps-filter .pipeline-icon { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); }
     .ps-deliver .pipeline-icon { background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.3); }
 
-    /* Sources & Channels */
-    .integrations {
-      padding: 100px 0;
-    }
-
-    .integrations h2 {
-      text-align: center;
-      font-size: 2.2rem;
-      margin-bottom: 12px;
-    }
-
-    .integrations .section-sub {
-      text-align: center;
-      color: var(--text-dim);
-      margin-bottom: 48px;
-      font-size: 1.1rem;
-    }
-
-    .integration-row {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-bottom: 40px;
-    }
-
-    .integration-label {
-      text-align: center;
-      font-weight: 700;
-      font-size: 0.85rem;
-      color: var(--text-dim);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 16px;
-    }
-
+    /* Integrations */
+    .integrations { padding: 100px 0; }
+    .integration-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 16px; margin-bottom: 40px; }
+    .integration-label { text-align: center; font-weight: 700; font-size: 0.85rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; }
     .integration-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 18px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 0.9rem;
-      color: var(--text);
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 18px; background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; font-size: 0.9rem; color: var(--text);
+    }
+
+    /* MCP Section */
+    .mcp-section { padding: 80px 0; }
+    .mcp-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+      padding: 48px; max-width: 800px; margin: 0 auto;
+    }
+    .mcp-card h3 { font-size: 1.3rem; margin-bottom: 8px; }
+    .mcp-card > p { color: var(--text-dim); font-size: 1rem; margin-bottom: 24px; }
+    .mcp-code {
+      background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 16px 20px;
+      font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.85rem; color: #c9d1d9;
+      overflow-x: auto; margin-bottom: 20px;
+    }
+    .mcp-tools { display: flex; flex-wrap: wrap; gap: 8px; }
+    .mcp-tool {
+      padding: 4px 12px; background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.25);
+      border-radius: 6px; font-size: 0.8rem; color: var(--purple);
+      font-family: 'SF Mono', 'Fira Code', monospace;
     }
 
     /* Privacy */
-    .privacy {
-      padding: 80px 0;
-    }
-
+    .privacy { padding: 80px 0; }
     .privacy-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 48px;
-      text-align: center;
-      max-width: 700px;
-      margin: 0 auto;
+      background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+      padding: 48px; text-align: center; max-width: 700px; margin: 0 auto;
     }
-
-    .privacy-card h2 {
-      font-size: 2rem;
-      margin-bottom: 16px;
-    }
-
-    .privacy-card p {
-      color: var(--text-dim);
-      font-size: 1.05rem;
-      margin-bottom: 24px;
-    }
-
-    .privacy-points {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      text-align: left;
-      max-width: 480px;
-      margin: 0 auto;
-    }
-
-    .privacy-point {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.9rem;
-      color: var(--text-dim);
-    }
-
+    .privacy-card h2 { font-size: 2rem; margin-bottom: 16px; }
+    .privacy-card p { color: var(--text-dim); font-size: 1.05rem; margin-bottom: 24px; }
+    .privacy-points { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; text-align: left; max-width: 480px; margin: 0 auto; }
+    .privacy-point { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: var(--text-dim); }
     .privacy-point .check { color: var(--green); }
 
     /* CTA */
-    .final-cta {
-      padding: 100px 0;
-      text-align: center;
-    }
-
-    .final-cta h2 {
-      font-size: 2.5rem;
-      margin-bottom: 16px;
-    }
-
-    .final-cta p {
-      color: var(--text-dim);
-      font-size: 1.1rem;
-      margin-bottom: 32px;
-    }
-
+    .final-cta { padding: 100px 0; text-align: center; }
+    .final-cta h2 { font-size: 2.5rem; margin-bottom: 16px; }
+    .final-cta p { color: var(--text-dim); font-size: 1.1rem; margin-bottom: 32px; }
     .install-box {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      background: #0d1117;
-      border: 1px solid #30363d;
-      border-radius: 10px;
-      padding: 16px 24px;
-      font-family: 'SF Mono', 'Fira Code', monospace;
-      font-size: 1rem;
-      color: var(--green);
-      margin-bottom: 20px;
+      display: inline-flex; align-items: center; gap: 12px;
+      background: #0d1117; border: 1px solid #30363d; border-radius: 10px;
+      padding: 16px 24px; font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 1rem; color: var(--green); margin-bottom: 20px;
     }
-
     .install-box .dollar { color: #8b949e; }
 
     /* Footer */
-    footer {
-      padding: 40px 0;
-      border-top: 1px solid var(--border);
-      text-align: center;
-      color: var(--text-dim);
-      font-size: 0.85rem;
-    }
-
-    footer a {
-      color: var(--accent);
-      text-decoration: none;
-    }
+    footer { padding: 40px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-dim); font-size: 0.85rem; }
+    footer a { color: var(--accent); text-decoration: none; }
 
     /* Responsive */
     @media (max-width: 768px) {
@@ -488,7 +292,14 @@
       .pipeline { flex-direction: column; align-items: center; }
       .pipeline-arrow { transform: rotate(90deg); padding: 0; }
       .privacy-points { grid-template-columns: 1fr; }
-      .nav-links { gap: 16px; }
+      .nav-links { gap: 14px; }
+      .desktop-content, .ask-content { grid-template-columns: 1fr; }
+      .run-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .run-grid { grid-template-columns: 1fr; }
+      .nav-links { gap: 10px; }
+      .nav-links a { font-size: 0.8rem; }
     }
   </style>
 </head>
@@ -499,8 +310,10 @@
     <a href="#" class="nav-logo">🦉 OWL</a>
     <ul class="nav-links">
       <li><a href="#features">Features</a></li>
-      <li><a href="#how">How It Works</a></li>
+      <li><a href="#desktop">Desktop App</a></li>
+      <li><a href="#ways">Ways to Run</a></li>
       <li><a href="#integrations">Integrations</a></li>
+      <li><a href="https://github.com/msaule/owl/blob/master/docs/setup-guide.md">Docs</a></li>
       <li><a href="https://github.com/msaule/owl">GitHub</a></li>
     </ul>
   </div>
@@ -512,15 +325,11 @@
     <h1>Your AI That<br>Never Sleeps</h1>
     <p class="subtitle">
       A local-first daemon that watches your tools, builds a living world model,
-      and surfaces discoveries you didn't know you needed.
+      and surfaces discoveries you didn't know you needed. Desktop app, CLI, web dashboard, Docker, or MCP.
     </p>
     <div class="cta-group">
-      <a href="https://github.com/msaule/owl" class="btn btn-primary">
-        ⭐ Star on GitHub
-      </a>
-      <a href="#install" class="btn btn-secondary">
-        Quick Install →
-      </a>
+      <a href="https://github.com/msaule/owl" class="btn btn-primary">⭐ Star on GitHub</a>
+      <a href="#install" class="btn btn-secondary">Quick Install →</a>
     </div>
   </div>
 </section>
@@ -559,15 +368,31 @@
   </div>
 </section>
 
+<!-- Features -->
 <section class="features" id="features">
   <div class="container">
-    <h2>Not a Chatbot. Not a Dashboard.</h2>
+    <h2 class="section-title">Not a Chatbot. Not a Dashboard.</h2>
     <p class="section-sub">A quiet analyst that speaks first only when something matters.</p>
     <div class="feature-grid">
       <div class="feature-card">
         <span class="feature-icon">🧠</span>
         <h3>Living World Model</h3>
         <p>Entities, relationships, events, patterns, and situations — all tracked in a local SQLite database that grows with every data source interaction.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🖥️</span>
+        <h3>Desktop App</h3>
+        <p>Native app for Windows, macOS, and Linux. System tray with live score, global hotkey (Ctrl+Shift+O), native OS notifications, and a setup wizard.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">💬</span>
+        <h3>Ask OWL Anything</h3>
+        <p>Query your world model in natural language. "What's happening with Acme?" OWL searches entities, events, discoveries, and patterns to answer.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🌐</span>
+        <h3>Web Dashboard</h3>
+        <p>Interactive D3.js knowledge graph, live discovery feed, OWL Score gauge, entity detail sidebar, source filters, and event timeline. Auto-refreshes every 60s.</p>
       </div>
       <div class="feature-card">
         <span class="feature-icon">🔗</span>
@@ -580,9 +405,9 @@
         <p>Statistical baselines per source, day, and hour. Z-score detection flags volume spikes and unexpected silence before you notice.</p>
       </div>
       <div class="feature-card">
-        <span class="feature-icon">🌐</span>
-        <h3>Cross-Source Correlation</h3>
-        <p>"Calendar meetings with Acme Corp are followed by GitHub PR activity within 2 hours." OWL finds temporal patterns across your tools.</p>
+        <span class="feature-icon">🔌</span>
+        <h3>MCP Server</h3>
+        <p>Model Context Protocol server for Claude Desktop, Cursor, and Windsurf. Ask "What's happening in my world?" from any MCP-compatible AI client.</p>
       </div>
       <div class="feature-card">
         <span class="feature-icon">🕸️</span>
@@ -595,14 +420,14 @@
         <p>React to discoveries via Telegram, Slack, or CLI. OWL learns what you value and adapts its filters, confidence calibration, and LLM prompts.</p>
       </div>
       <div class="feature-card">
+        <span class="feature-icon">🐳</span>
+        <h3>Docker Ready</h3>
+        <p>One-command deployment with <code>docker compose up</code>. Runs daemon + dashboard, persistent volumes, healthchecks, and Ollama integration built-in.</p>
+      </div>
+      <div class="feature-card">
         <span class="feature-icon">📋</span>
         <h3>Weekly Debrief</h3>
         <p>Every Sunday, a narrative summary: top discoveries, new entities, active situations, and what to watch for next week.</p>
-      </div>
-      <div class="feature-card">
-        <span class="feature-icon">🩺</span>
-        <h3>Self-Diagnostics</h3>
-        <p>OWL monitors its own health — pipeline metrics, feedback rates, entity growth, and performance anomalies. It pages itself.</p>
       </div>
       <div class="feature-card">
         <span class="feature-icon">🌙</span>
@@ -613,9 +438,173 @@
   </div>
 </section>
 
+<!-- Desktop App Showcase -->
+<section class="desktop-showcase" id="desktop">
+  <div class="container">
+    <h2 class="section-title">The Desktop App</h2>
+    <p class="section-sub">OWL lives in your system tray. Always watching. One hotkey away.</p>
+    <div class="desktop-content">
+      <ul class="desktop-features">
+        <li>
+          <span class="feat-icon">⌨️</span>
+          <div class="feat-text">
+            <h4>Global Hotkey</h4>
+            <p>Press Ctrl+Shift+O from any app to summon OWL instantly. Press again to hide.</p>
+          </div>
+        </li>
+        <li>
+          <span class="feat-icon">🔔</span>
+          <div class="feat-text">
+            <h4>Native Notifications</h4>
+            <p>New discoveries push to your OS notification center. Click to jump straight to the insight.</p>
+          </div>
+        </li>
+        <li>
+          <span class="feat-icon">📊</span>
+          <div class="feat-text">
+            <h4>Live Tray</h4>
+            <p>OWL Score, daemon status, recent discoveries, and quick actions — all in the system tray.</p>
+          </div>
+        </li>
+        <li>
+          <span class="feat-icon">🪟</span>
+          <div class="feat-text">
+            <h4>Frameless Window</h4>
+            <p>Sleek, modern look with custom titlebar. Remembers your position and size across restarts.</p>
+          </div>
+        </li>
+        <li>
+          <span class="feat-icon">🧙</span>
+          <div class="feat-text">
+            <h4>Setup Wizard</h4>
+            <p>4-step guided setup on first launch: LLM connection, data sources, channels, and preferences.</p>
+          </div>
+        </li>
+        <li>
+          <span class="feat-icon">🚀</span>
+          <div class="feat-text">
+            <h4>Launch at Startup</h4>
+            <p>Toggle in tray menu. OWL starts with your computer and watches silently in the background.</p>
+          </div>
+        </li>
+      </ul>
+      <div class="desktop-mockup">
+        <div class="mockup-titlebar">
+          <span class="mockup-dot r"></span>
+          <span class="mockup-dot y"></span>
+          <span class="mockup-dot g"></span>
+          <span class="mockup-title">OWL Dashboard</span>
+        </div>
+        <div class="mockup-body">
+          <div class="mockup-row">
+            <div class="mockup-block">
+              <h5>OWL Score</h5>
+              <div class="mockup-score">76 <span>/ 100</span></div>
+              <div class="mockup-bar"><div class="mockup-bar-fill" style="width:76%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px"></div></div>
+            </div>
+            <div class="mockup-block">
+              <h5>Knowledge Graph</h5>
+              <div style="padding:8px 0">
+                <span class="mockup-node" style="background:var(--blue)"></span>
+                <span class="mockup-node" style="background:var(--purple)"></span>
+                <span class="mockup-node" style="background:var(--accent)"></span>
+                <span class="mockup-node" style="background:var(--green)"></span>
+                <span class="mockup-node" style="background:var(--blue)"></span>
+                <span class="mockup-node" style="background:var(--red)"></span>
+                <span class="mockup-node" style="background:var(--cyan)"></span>
+                <span class="mockup-node" style="background:var(--purple)"></span>
+              </div>
+              <div style="font-size:0.7rem;color:var(--text-dim)">10 entities &middot; 7 relationships</div>
+            </div>
+          </div>
+          <div class="mockup-block">
+            <h5>Recent Discoveries</h5>
+            <div style="font-size:0.8rem;padding:4px 0;color:var(--red)">!! CloudScale Inc activity spike</div>
+            <div style="font-size:0.8rem;padding:4px 0;color:var(--yellow)">! Nexus AI contract renewal timing</div>
+            <div style="font-size:0.8rem;padding:4px 0;color:var(--green)">Apex Corp deal likely closing</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Ask OWL -->
+<section class="ask-section" id="ask">
+  <div class="container">
+    <h2 class="section-title">Ask OWL Anything</h2>
+    <p class="section-sub">Natural language queries against your entire world model.</p>
+    <div class="ask-content">
+      <div>
+        <p style="color:var(--text-dim);margin-bottom:24px">
+          OWL searches your entities, events, discoveries, patterns, and situations to answer questions. It understands entity names, detects fuzzy matches, and pulls deep relationship context automatically.
+        </p>
+        <p style="color:var(--text-dim);margin-bottom:24px">
+          Use <code style="background:var(--card);padding:2px 6px;border-radius:4px;font-size:0.85rem">owl ask --chat</code> for multi-turn interactive conversations with your world model, complete with follow-up suggestions.
+        </p>
+        <div class="cta-group" style="justify-content:flex-start">
+          <a href="https://github.com/msaule/owl#ask-owl-anything" class="btn btn-secondary">Learn More →</a>
+        </div>
+      </div>
+      <ul class="ask-examples">
+        <li><span>$ </span>owl ask "what's happening with Acme?"</li>
+        <li><span>$ </span>owl ask "who am I meeting this week?"</li>
+        <li><span>$ </span>owl ask "any risks I should know about?"</li>
+        <li><span>$ </span>owl ask "relationship between Sarah and Project Aurora?"</li>
+        <li><span>$ </span>owl ask --chat</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Ways to Run -->
+<section class="ways-to-run" id="ways">
+  <div class="container">
+    <h2 class="section-title">Five Ways to Run OWL</h2>
+    <p class="section-sub">Choose what fits your workflow. Mix and match.</p>
+    <div class="run-grid">
+      <div class="run-card">
+        <span class="run-badge badge-new">NEW</span>
+        <span class="run-icon">🖥️</span>
+        <h3>Desktop App</h3>
+        <p>Native app with tray, hotkey, and notifications. Windows, macOS, Linux.</p>
+        <code>npm run electron:dev</code>
+      </div>
+      <div class="run-card">
+        <span class="run-icon">💻</span>
+        <h3>CLI Daemon</h3>
+        <p>The original. Runs in background with cron scheduling.</p>
+        <code>owl start</code>
+      </div>
+      <div class="run-card">
+        <span class="run-badge badge-new">NEW</span>
+        <span class="run-icon">🌐</span>
+        <h3>Web Dashboard</h3>
+        <p>Interactive knowledge graph with D3.js. Real-time discovery feed.</p>
+        <code>owl dashboard</code>
+      </div>
+      <div class="run-card">
+        <span class="run-badge badge-new">NEW</span>
+        <span class="run-icon">🐳</span>
+        <h3>Docker</h3>
+        <p>One-command deploy. Daemon + dashboard in a container.</p>
+        <code>docker compose up -d</code>
+      </div>
+      <div class="run-card">
+        <span class="run-badge badge-new">NEW</span>
+        <span class="run-icon">🔌</span>
+        <h3>MCP Server</h3>
+        <p>Query OWL from Claude Desktop, Cursor, or Windsurf.</p>
+        <code>Add to mcp config</code>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
 <section class="how-it-works" id="how">
   <div class="container">
-    <h2>Five-Layer Architecture</h2>
+    <h2 class="section-title">Five-Layer Architecture</h2>
     <div class="pipeline">
       <div class="pipeline-step ps-watch">
         <div class="pipeline-icon">👁️</div>
@@ -650,9 +639,10 @@
   </div>
 </section>
 
+<!-- Integrations -->
 <section class="integrations" id="integrations">
   <div class="container">
-    <h2>Connects to Everything</h2>
+    <h2 class="section-title">Connects to Everything</h2>
     <p class="section-sub">Data sources in. Discoveries out. Through the tools you already use.</p>
 
     <div class="integration-label">Data Sources (Plugins)</div>
@@ -667,6 +657,7 @@
 
     <div class="integration-label">Delivery Channels</div>
     <div class="integration-row">
+      <span class="integration-chip">🖥️ Desktop Notifications</span>
       <span class="integration-chip">✈️ Telegram</span>
       <span class="integration-chip">💬 Slack</span>
       <span class="integration-chip">🎮 Discord</span>
@@ -676,9 +667,51 @@
       <span class="integration-chip">📡 RSS/Atom</span>
       <span class="integration-chip">💻 CLI</span>
     </div>
+
+    <div class="integration-label">AI Clients (MCP)</div>
+    <div class="integration-row">
+      <span class="integration-chip">🤖 Claude Desktop</span>
+      <span class="integration-chip">⌨️ Cursor</span>
+      <span class="integration-chip">🌊 Windsurf</span>
+    </div>
   </div>
 </section>
 
+<!-- MCP Section -->
+<section class="mcp-section">
+  <div class="container">
+    <div class="mcp-card">
+      <h3>🔌 MCP Server — Your World in Any AI Client</h3>
+      <p>Add OWL as an MCP server and query your world model from Claude Desktop, Cursor, or any MCP-compatible client.</p>
+      <div class="mcp-code">
+<pre style="margin:0">{
+  "mcpServers": {
+    "owl": {
+      "command": "node",
+      "args": ["/path/to/owl/src/mcp/server.js"]
+    }
+  }
+}</pre>
+      </div>
+      <div class="integration-label" style="text-align:left">Available MCP Tools</div>
+      <div class="mcp-tools">
+        <span class="mcp-tool">owl_status</span>
+        <span class="mcp-tool">owl_ask</span>
+        <span class="mcp-tool">owl_entities</span>
+        <span class="mcp-tool">owl_entity_detail</span>
+        <span class="mcp-tool">owl_discoveries</span>
+        <span class="mcp-tool">owl_events</span>
+        <span class="mcp-tool">owl_relationships</span>
+        <span class="mcp-tool">owl_graph</span>
+        <span class="mcp-tool">owl_situations</span>
+        <span class="mcp-tool">owl_patterns</span>
+        <span class="mcp-tool">owl_feedback</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Privacy -->
 <section class="privacy">
   <div class="container">
     <div class="privacy-card">
@@ -696,6 +729,7 @@
   </div>
 </section>
 
+<!-- CTA -->
 <section class="final-cta" id="install">
   <div class="container">
     <h2>Start Watching Your World</h2>
@@ -705,12 +739,8 @@
     </div>
     <br><br>
     <div class="cta-group">
-      <a href="https://github.com/msaule/owl" class="btn btn-primary">
-        View on GitHub
-      </a>
-      <a href="https://github.com/msaule/owl/blob/master/docs/setup-guide.md" class="btn btn-secondary">
-        Setup Guide →
-      </a>
+      <a href="https://github.com/msaule/owl" class="btn btn-primary">View on GitHub</a>
+      <a href="https://github.com/msaule/owl/blob/master/docs/setup-guide.md" class="btn btn-secondary">Setup Guide →</a>
     </div>
   </div>
 </section>
@@ -720,6 +750,7 @@
     <p>
       🦉 OWL — MIT License —
       <a href="https://github.com/msaule/owl">GitHub</a> ·
+      <a href="https://github.com/msaule/owl/blob/master/docs/setup-guide.md">Setup Guide</a> ·
       <a href="https://github.com/msaule/owl/blob/master/CONTRIBUTING.md">Contributing</a> ·
       <a href="https://github.com/msaule/owl/issues">Issues</a>
     </p>

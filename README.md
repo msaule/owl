@@ -180,7 +180,7 @@ The container runs the daemon and exposes the dashboard on port 3000. Mount a vo
 
 ## Desktop App (Windows / macOS / Linux)
 
-OWL ships as a native desktop app with system tray integration, built-in dashboard, and a setup wizard.
+OWL ships as a native Electron desktop app — a polished, standalone experience with deep OS integration.
 
 ```bash
 # Development
@@ -191,12 +191,19 @@ npm run electron:build
 ```
 
 Features:
-- System tray with live OWL Score, daemon status, and quick actions
-- Main window loads the full web dashboard
-- Setup wizard walks you through LLM, plugins, channels, and preferences on first run
-- Daemon auto-starts and auto-restarts on crash
-- Minimize to tray — OWL keeps watching in the background
-- Single instance lock prevents duplicate windows
+- **Frameless window** with OS-native titlebar overlay (traffic lights on macOS, custom controls on Windows/Linux)
+- **Animated splash screen** — owl eyes with blink, look, and glow animations while loading
+- **System tray** with live OWL Score, daemon status, last 3 discoveries, and quick actions
+- **Native OS notifications** — new discoveries push real desktop notifications every 60 seconds
+- **Global hotkey** — `Ctrl+Shift+O` (or `Cmd+Shift+O` on macOS) toggles OWL from anywhere
+- **Window state persistence** — remembers position, size, and maximized state across sessions with multi-monitor validation
+- **Launch at startup** — toggle from tray menu to auto-start OWL with your OS
+- **Setup wizard** — guided first-run flow for LLM, plugins, channels, and preferences
+- **Auto-reconnect** — if the dashboard process crashes, OWL restarts it and reloads automatically
+- **Protocol handler** — `owl://` deep links open the app directly
+- **Minimize to tray** — OWL keeps watching in the background
+- **Single instance lock** — prevents duplicate windows
+- **Secure IPC** — contextBridge preload script for safe renderer-to-main communication
 
 ## Advanced Features
 

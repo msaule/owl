@@ -89,6 +89,70 @@ owl service install
 owl service status
 ```
 
+## Web Dashboard
+
+Launch the visual dashboard:
+
+```bash
+owl dashboard
+owl dashboard --port 8080
+```
+
+Features an interactive D3.js knowledge graph, live discovery feed, OWL Score gauge, and event timeline. Auto-refreshes every 60 seconds.
+
+## Desktop App
+
+Install Electron dependencies and run the desktop app:
+
+```bash
+npm install
+npm run electron:dev
+```
+
+Build a distributable installer:
+
+```bash
+npm run electron:build
+```
+
+This produces platform-native installers (`.exe` for Windows, `.dmg` for macOS, `.AppImage` for Linux). The desktop app includes a built-in setup wizard, system tray integration, native notifications, and a global hotkey (`Ctrl+Shift+O`) to toggle the window.
+
+> **Note:** If running from a VS Code terminal, the `electron:dev` script automatically unsets `ELECTRON_RUN_AS_NODE` which VS Code sets by default.
+
+## MCP Server (Claude Desktop / Cursor / Windsurf)
+
+Add OWL as an MCP server in your AI client's config:
+
+```json
+{
+  "mcpServers": {
+    "owl": {
+      "command": "node",
+      "args": ["/path/to/owl/src/mcp/server.js"]
+    }
+  }
+}
+```
+
+Available tools: `owl_status`, `owl_ask`, `owl_entities`, `owl_discoveries`, `owl_events`, `owl_entity_detail`, `owl_graph`, `owl_situations`
+
+This lets Claude Desktop, Cursor, or Windsurf query your world model directly.
+
+## Docker
+
+```bash
+docker compose up -d
+```
+
+Or build manually:
+
+```bash
+docker build -t owl .
+docker run -d --name owl -v owl-data:/data -p 3000:3000 owl
+```
+
+The container runs the daemon and exposes the dashboard on port 3000. Set `OWL_LLM_BASE_URL` to point to your LLM (use `host.docker.internal` for host-network Ollama).
+
 ## Logs and Costs
 
 ```bash
