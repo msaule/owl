@@ -105,13 +105,13 @@ export async function runDemo() {
 
   // Add relationships
   const relSpinner = ora({ text: 'Mapping relationships...', color: 'yellow' }).start();
-  wm.addRelationship({ fromEntity: entityIds[0], toEntity: entityIds[3], type: 'works_at', strength: 0.9 });
-  wm.addRelationship({ fromEntity: entityIds[1], toEntity: entityIds[3], type: 'works_at', strength: 0.9 });
-  wm.addRelationship({ fromEntity: entityIds[2], toEntity: entityIds[4], type: 'works_at', strength: 0.9 });
-  wm.addRelationship({ fromEntity: entityIds[0], toEntity: entityIds[6], type: 'leads', strength: 0.8 });
-  wm.addRelationship({ fromEntity: entityIds[1], toEntity: entityIds[8], type: 'leads', strength: 0.7 });
-  wm.addRelationship({ fromEntity: entityIds[3], toEntity: entityIds[7], type: 'pursuing', strength: 0.6 });
-  wm.addRelationship({ fromEntity: entityIds[4], toEntity: entityIds[3], type: 'partner_of', strength: 0.5 });
+  wm.addRelationship({ from_entity: entityIds[0], to_entity: entityIds[3], type: 'works_at', strength: 0.9 });
+  wm.addRelationship({ from_entity: entityIds[1], to_entity: entityIds[3], type: 'works_at', strength: 0.9 });
+  wm.addRelationship({ from_entity: entityIds[2], to_entity: entityIds[4], type: 'works_at', strength: 0.9 });
+  wm.addRelationship({ from_entity: entityIds[0], to_entity: entityIds[6], type: 'leads', strength: 0.8 });
+  wm.addRelationship({ from_entity: entityIds[1], to_entity: entityIds[8], type: 'leads', strength: 0.7 });
+  wm.addRelationship({ from_entity: entityIds[3], to_entity: entityIds[7], type: 'pursuing', strength: 0.6 });
+  wm.addRelationship({ from_entity: entityIds[4], to_entity: entityIds[3], type: 'partner_of', strength: 0.5 });
   await sleep(600);
   relSpinner.succeed('Mapped 7 relationships');
 

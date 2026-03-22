@@ -10,7 +10,7 @@ const OWL_ASCII = `
 
 const COMPACT_OWL = '🦉';
 
-export function showBanner(version = '0.1.0') {
+export function showBanner(version = '1.0.0') {
   const owl = chalk.hex('#FFB347')(OWL_ASCII);
   const title = chalk.bold.hex('#FFB347')('OWL');
   const tagline = chalk.dim('Your AI that never sleeps.');
