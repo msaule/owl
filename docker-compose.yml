@@ -1,22 +1,32 @@
-version: "3.8"
-
 services:
   owl:
     build: .
     container_name: owl
     restart: unless-stopped
+    entrypoint: ["sh", "/app/docker-entrypoint.sh"]
+    command: ["both"]
     volumes:
       - owl-data:/data
     ports:
       - "3000:3000"
     environment:
       - OWL_HOME=/data
-      # Uncomment and set your LLM provider:
-      # - OWL_LLM_BASE_URL=http://host.docker.internal:11434/v1
-      # - OWL_LLM_MODEL=qwen2.5:14b-instruct
-      # - OWL_LLM_API_KEY=
+      - PORT=3000
+      # Point to Ollama on your host machine:
+      - OWL_LLM_BASE_URL=http://host.docker.internal:11434/v1
+      - OWL_LLM_MODEL=qwen2.5:14b-instruct
+      # Or use a cloud LLM:
+      # - OWL_LLM_BASE_URL=https://api.openai.com/v1
+      # - OWL_LLM_API_KEY=sk-...
+      # - OWL_LLM_MODEL=gpt-4o-mini
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/api/stats').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
 
 volumes:
   owl-data:

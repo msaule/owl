@@ -438,12 +438,14 @@ program
   });
 
 program
-  .command('ask <question...>')
+  .command('ask [question...]')
   .description('Ask OWL anything about your world — natural language queries against your world model')
   .option('--days <days>', 'How far back to look', Number, 14)
+  .option('--chat', 'Enter interactive conversation mode')
   .action(async (words, options) => {
     ensureConfigFile();
-    await runAsk(words.join(' '), { days: options.days });
+    const question = words?.length ? words.join(' ') : null;
+    await runAsk(question, { days: options.days, chat: options.chat || !question });
   });
 
 program
