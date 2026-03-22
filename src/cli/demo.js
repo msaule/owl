@@ -3,6 +3,8 @@ import ora from 'ora';
 import crypto from 'node:crypto';
 import { WorldModel } from '../core/world-model.js';
 import { showBanner, computeOwlScore, formatOwlScore } from './banner.js';
+import { DB_PATH, OWL_HOME } from '../config/index.js';
+import fs from 'node:fs';
 
 const DEMO_ENTITIES = [
   { type: 'person', name: 'Sarah Chen', attributes: { role: 'CTO', company: 'Nexus AI' } },
@@ -77,8 +79,9 @@ export async function runDemo() {
   showBanner();
   console.log(chalk.hex('#FFB347').bold('  ▶ Demo Mode') + chalk.dim(' — Watch OWL analyze a simulated world\n'));
 
-  const dbPath = ':memory:';
-  const wm = new WorldModel(dbPath);
+  // Persist to real DB so dashboard/desktop app can display demo data
+  fs.mkdirSync(OWL_HOME, { recursive: true });
+  const wm = new WorldModel(DB_PATH);
 
   // Step 1: Ingest entities
   const spinner = ora({ text: 'Connecting to data sources...', color: 'yellow' }).start();
