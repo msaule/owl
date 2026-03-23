@@ -5,7 +5,7 @@ export function getDashboardHtml() {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>OWL Dashboard</title>
-<script src="https://d3js.org/d3.v7.min.js"><\/script>
+<script src="/d3.min.js"><\/script>
 <style>
   :root {
     --bg: #0a0a0f;
@@ -530,8 +530,10 @@ if (window.owl) {
     hdr.querySelectorAll('input, button, select, .score-badge, .filter-btn').forEach(el => {
       el.style.webkitAppRegion = 'no-drag';
     });
-    // Add left padding for traffic lights on macOS
-    owl.getPlatform().then(p => { if (p === 'darwin') hdr.style.paddingLeft = '80px'; });
+    owl.getPlatform().then(p => {
+      if (p === 'darwin') hdr.style.paddingLeft = '80px';
+      else hdr.style.paddingRight = '140px'; // space for Windows titlebar overlay buttons
+    });
   }
 }
 <\/script>

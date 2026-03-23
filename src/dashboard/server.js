@@ -1,5 +1,7 @@
 import http from 'node:http';
 import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { loadConfig } from '../config/index.js';
 import { WorldModel } from '../core/world-model.js';
 import { buildAdjacencyList, getHubs, findClusters } from '../core/graph.js';
@@ -65,12 +67,12 @@ function apiGraph(config) {
       });
 
       for (const neighbor of neighbors) {
-        const edgeKey = [entityId, neighbor.entityId].sort().join('::');
+        const edgeKey = [entityId, neighbor.target].sort().join('::');
         if (!seen.has(edgeKey)) {
           seen.add(edgeKey);
           edges.push({
             source: entityId,
-            target: neighbor.entityId,
+            target: neighbor.target,
             type: neighbor.type,
             strength: neighbor.strength
           });
@@ -145,6 +147,14 @@ export function startDashboard(options = {}) {
       if (url === '/' || url === '/index.html') {
         res.writeHead(200, { 'Content-Type': 'text/html' });
         res.end(getDashboardHtml());
+        return;
+      }
+
+      if (url === '/d3.min.js') {
+        const __dirname = path.dirname(fileURLToPath(import.meta.url));
+        const d3Path = path.join(__dirname, 'd3.min.js');
+        res.writeHead(200, { 'Content-Type': 'application/javascript', 'Cache-Control': 'public, max-age=86400' });
+        fs.createReadStream(d3Path).pipe(res);
         return;
       }
 
